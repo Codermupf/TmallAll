@@ -8,11 +8,14 @@ package bean;
  4. 与Order的多对一关系
  */
 public class OrderItem {
-    private int number;
+    public int getNumber() {
+        return number;
+    }
+    private int     number;
     private Product product;
-    private Order order;
-    private User user;
-    private int id;
+    private Order   order;
+    private User    user;
+    private int     id;
     public void setNumber(int number) {
         this.number = number;
     }
