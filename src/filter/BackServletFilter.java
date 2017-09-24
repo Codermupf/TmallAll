@@ -19,6 +19,7 @@ public class BackServletFilter implements Filter {
 //        HttpServletRequest是ServletRequest的子类
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
+        request.setCharacterEncoding("UTF-8");
 //        解决相对路径问题，返回站点的根路径，
         String contextPath=request.getServletContext().getContextPath ();
 //        通过request.getRequestURI()取出访问的uri: /tmall/admin_category_list

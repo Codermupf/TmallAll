@@ -120,7 +120,6 @@ public class categoryServlet extends BaseBackServlet {
         List<Category> cs    = categoryDAO.list(page.getStart(),page.getCount());
         int            total = categoryDAO.getTotal();
         page.setTotal(total);
-
         request.setAttribute("thecs", cs);
         request.setAttribute("page", page);
 

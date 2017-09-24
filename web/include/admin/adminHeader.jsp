@@ -14,6 +14,7 @@
 	
 <script>
 function checkEmpty(id, name){
+//    $("#tid").val() == document.getElementById("tid).value
 	var value = $("#"+id).val();
 	if(value.length==0){
 		alert(name+ "不能为空");
@@ -56,6 +57,7 @@ function checkInt(id, name){
 
 $(function(){
 	$("a").click(function(){
+      //获取属性的值（取得第一个匹配元素的属性值。通过这个方法可以方便地从第一个匹配元素中获取一个属性的值。如果元素没有相应属性，则返回 undefined ）
 		var deleteLink = $(this).attr("deleteLink");
 		console.log(deleteLink);
 		if("true"==deleteLink){
