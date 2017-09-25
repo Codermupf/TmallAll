@@ -73,4 +73,13 @@
         <servlet-name>OrderServlet</servlet-name>
         <url-pattern>/orderServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ForeServlet</servlet-name>
+        <servlet-class>servlet.ForeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForeServlet</servlet-name>
+        <url-pattern>/foreServlet</url-pattern>
+    </servlet-mapping>
 </web-app>
