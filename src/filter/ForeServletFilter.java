@@ -22,11 +22,12 @@ public class ForeServletFilter implements Filter {
     public void destroy() {
     }
 
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) resp;
-        String contextPath = request.getServletContext().getContextPath();
+        HttpServletResponse response = (HttpServletResponse) res;
+        String contextPath=request.getServletContext().getContextPath();
         request.getServletContext().setAttribute("contextPath", contextPath);
+
         User user =(User) request.getSession().getAttribute("user");
         int cartTotalItemNumber= 0;
         if(null!=user){
@@ -36,21 +37,23 @@ public class ForeServletFilter implements Filter {
             }
         }
         request.setAttribute("cartTotalItemNumber", cartTotalItemNumber);
-        List<Category> cs =(List<Category>) request.getAttribute("cs");
+
+        List<Category> cs=(List<Category>) request.getAttribute("cs");
         if(null==cs){
             cs=new CategoryDAO().list();
             request.setAttribute("cs", cs);
         }
+
         String uri = request.getRequestURI();
-        uri = StringUtils.remove(uri, contextPath);
+        uri =StringUtils.remove(uri, contextPath);
         if(uri.startsWith("/fore")&&!uri.startsWith("/foreServlet")){
-            String method = StringUtils.substringAfterLast(uri, "/fore");
-            request.setAttribute(method, method);
+            String method = StringUtils.substringAfterLast(uri,"/fore" );
+            request.setAttribute("method", method);
             req.getRequestDispatcher("/foreServlet").forward(request, response);
             return;
         }
 
-        chain.doFilter(req, resp);
+        chain.doFilter(request, response);
     }
 
     public void init(FilterConfig config) throws ServletException {

@@ -22,8 +22,8 @@ import java.util.Map;
 /**
  * Created by OovEver on 2017/9/19.
  */
-@WebServlet(name = "categoryServlet")
-public class categoryServlet extends BaseBackServlet {
+@WebServlet(name = "CategoryServlet")
+public class CategoryServlet extends BaseBackServlet {
     @Override
     public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
         Map<String, String> params = new HashMap<>();

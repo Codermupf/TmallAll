@@ -21,7 +21,7 @@
     </filter-mapping>
     <servlet>
         <servlet-name>CategoryServlet</servlet-name>
-        <servlet-class>servlet.categoryServlet</servlet-class>
+        <servlet-class>servlet.CategoryServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -72,5 +72,14 @@
     <servlet-mapping>
         <servlet-name>OrderServlet</servlet-name>
         <url-pattern>/orderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ForeServlet</servlet-name>
+        <servlet-class>servlet.ForeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForeServlet</servlet-name>
+        <url-pattern>/foreServlet</url-pattern>
     </servlet-mapping>
 </web-app>

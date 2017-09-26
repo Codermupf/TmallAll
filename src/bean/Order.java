@@ -12,48 +12,51 @@ import java.util.List;
  3. total,totalNumber 这个订单的总金额和总数量
  */
 public class Order {
-    private String          orderCode;
-    private String          address;
-    private String          post;
-    private String          receiver;
-    private String          mobile;
-    private String          userMessage;
-    private Date            createDate;
-    private Date            payDate;
-    private Date            deliveryDate;
-    private Date            confirmDate;
-    private User            user;
-    private int             id;
+    private String orderCode;
+    private String address;
+    private String post;
+    private String receiver;
+    private String mobile;
+    private String userMessage;
+    private Date createDate;
+    private Date payDate;
+    private Date deliveryDate;
+    private Date confirmDate;
+    private User user;
+    private int id;
     private List<OrderItem> orderItems;
-    private float           total;
-    private int             totalNumber;
-    private String          status;
+    private float total;
+    private int totalNumber;
+    private String status;
+
+
     public String getStatusDesc(){
         String desc ="未知";
         switch(status){
-          case OrderDAO.waitPay:
-              desc="待付款";
-              break;
-          case OrderDAO.waitDelivery:
-              desc="待发货";
-              break;
-          case OrderDAO.waitConfirm:
-              desc="待收货";
-              break;
-          case OrderDAO.waitReview:
-              desc="等评价";
-              break;
-          case OrderDAO.finish:
-              desc="完成";
-              break;
-          case OrderDAO.delete:
-              desc="刪除";
-              break;
-          default:
-              desc="未知";
+            case OrderDAO.waitPay:
+                desc="待付款";
+                break;
+            case OrderDAO.waitDelivery:
+                desc="待发货";
+                break;
+            case OrderDAO.waitConfirm:
+                desc="待收货";
+                break;
+            case OrderDAO.waitReview:
+                desc="等评价";
+                break;
+            case OrderDAO.finish:
+                desc="完成";
+                break;
+            case OrderDAO.delete:
+                desc="刪除";
+                break;
+            default:
+                desc="未知";
         }
         return desc;
     }
+
 
     public int getId() {
         return id;
@@ -74,6 +77,7 @@ public class Order {
     public void setPost(String post) {
         this.post = post;
     }
+
 
     public String getMobile() {
         return mobile;

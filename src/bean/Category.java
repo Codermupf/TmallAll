@@ -8,8 +8,9 @@ import java.util.List;
 public class Category {
     private String name;
     private int id;
-    List<Product>       products;
+    List<Product> products;
     List<List<Product>> productsByRow;
+
     public int getId() {
         return id;
     }

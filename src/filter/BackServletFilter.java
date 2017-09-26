@@ -32,7 +32,7 @@ public class BackServletFilter implements Filter {
             String servletPath = StringUtils.substringBetween(uri,"_", "_") + "Servlet";
             String method = StringUtils.substringAfterLast(uri,"_" );
             request.setAttribute("method", method);
-//            ("/" + servletPath)="/categoryServlet"
+//            ("/" + servletPath)="/CategoryServlet"
             req.getRequestDispatcher("/" + servletPath).forward(request, response);
             return;
         }

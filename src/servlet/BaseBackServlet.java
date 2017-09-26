@@ -56,7 +56,7 @@ public abstract class BaseBackServlet extends HttpServlet {
 
             /*借助反射，调用对应的方法*/
             String method = (String) request.getAttribute("method");
-//            m->categoryServlet.list();
+//            m->CategoryServlet.list();
             Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class,
                     javax.servlet.http.HttpServletResponse.class,Page.class);
 //            invoke 调用方法
