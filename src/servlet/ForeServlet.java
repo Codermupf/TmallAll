@@ -57,4 +57,22 @@ public class ForeServlet extends BaseForeServlet {
 
         return "@registerSuccess.jsp";
     }
+    public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
+        String name = request.getParameter("name");
+        name = HtmlUtils.htmlEscape(name);
+        String password = request.getParameter("password");
+
+        User user = userDAO.get(name,password);
+
+        if(null==user){
+            request.setAttribute("msg", "账号密码错误");
+            return "login.jsp";
+        }
+        request.getSession().setAttribute("user", user);
+        return "@forehome";
+    }
+    public String logout(HttpServletRequest request, HttpServletResponse response, Page page) {
+        request.getSession().removeAttribute("user");
+        return "@forehome";
+    }
 }
