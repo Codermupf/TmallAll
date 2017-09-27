@@ -75,4 +75,23 @@ public class ForeServlet extends BaseForeServlet {
         request.getSession().removeAttribute("user");
         return "@forehome";
     }
+
+    //    产品页
+    public String product(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        Product p = productDAO.get(pid);
+        List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
+        List<ProductImage> productDetailImages = productImageDAO.list(p, ProductImageDAO.type_detail);
+        p.setProductSingleImages(productSingleImages);
+        p.setProductDetailImages(productDetailImages);
+        List<PropertyValue> pvs = propertyValueDAO.list(p.getId());
+
+        List<Review> reviews = reviewDAO.list(p.getId());
+
+        productDAO.setSaleAndReviewNumber(p);
+        request.setAttribute("reviews", reviews);
+        request.setAttribute("p", p);
+        request.setAttribute("pvs", pvs);
+        return "product.jsp";
+    }
 }
