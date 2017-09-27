@@ -195,4 +195,40 @@ public class ForeServlet extends BaseForeServlet {
         request.setAttribute("total", total);
         return "buy.jsp";
     }
+
+    //    加入购物车功能
+    public String addCart(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        Product p = productDAO.get(pid);
+        int num = Integer.parseInt(request.getParameter("num"));
+
+        User user =(User) request.getSession().getAttribute("user");
+        boolean found = false;
+        List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
+        for (OrderItem oi : ois) {
+            if(oi.getProduct().getId()==p.getId()){
+                oi.setNumber(oi.getNumber()+num);
+                orderItemDAO.update(oi);
+                found = true;
+                break;
+            }
+        }
+
+        if(!found){
+            OrderItem oi = new OrderItem();
+            oi.setUser(user);
+            oi.setNumber(num);
+            oi.setProduct(p);
+            orderItemDAO.add(oi);
+        }
+        return "%success";
+    }
+
+    //    查看购物车
+    public String cart(HttpServletRequest request, HttpServletResponse response, Page page) {
+        User user =(User) request.getSession().getAttribute("user");
+        List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
+        request.setAttribute("ois", ois);
+        return "cart.jsp";
+    }
 }
