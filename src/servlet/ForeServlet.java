@@ -231,4 +231,30 @@ public class ForeServlet extends BaseForeServlet {
         request.setAttribute("ois", ois);
         return "cart.jsp";
     }
+    public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
+        User user =(User) request.getSession().getAttribute("user");
+        if(null==user)
+            return "%fail";
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        int number = Integer.parseInt(request.getParameter("number"));
+        List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
+        for (OrderItem oi : ois) {
+            if(oi.getProduct().getId()==pid){
+                oi.setNumber(number);
+                orderItemDAO.update(oi);
+                break;
+            }
+
+        }
+        return "%success";
+
+    }
+    public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page){
+        User user =(User) request.getSession().getAttribute("user");
+        if(null==user)
+            return "%fail";
+        int oiid = Integer.parseInt(request.getParameter("oiid"));
+        orderItemDAO.delete(oiid);
+        return "%success";
+    }
 }
