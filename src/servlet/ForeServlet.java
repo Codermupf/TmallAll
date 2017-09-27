@@ -94,4 +94,21 @@ public class ForeServlet extends BaseForeServlet {
         request.setAttribute("pvs", pvs);
         return "product.jsp";
     }
+    public String checkLogin(HttpServletRequest request, HttpServletResponse response, Page page) {
+        User user =(User) request.getSession().getAttribute("user");
+        if(null!=user)
+            return "%success";
+        return "%fail";
+    }
+    public String loginAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        User user = userDAO.get(name,password);
+
+        if(null==user){
+            return "%fail";
+        }
+        request.getSession().setAttribute("user", user);
+        return "%success";
+    }
 }
