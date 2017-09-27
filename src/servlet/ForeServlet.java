@@ -309,4 +309,27 @@ public class ForeServlet extends BaseForeServlet {
 
         return "bought.jsp";
     }
+    public String confirmPay(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int oid = Integer.parseInt(request.getParameter("oid"));
+        Order o = orderDAO.get(oid);
+        orderItemDAO.fill(o);
+        request.setAttribute("o", o);
+        return "confirmPay.jsp";
+    }
+    public String orderConfirmed(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int oid = Integer.parseInt(request.getParameter("oid"));
+        Order o = orderDAO.get(oid);
+        o.setStatus(OrderDAO.waitReview);
+        o.setConfirmDate(new Date());
+        orderDAO.update(o);
+        return "orderConfirmed.jsp";
+    }
+    public String deleteOrder(HttpServletRequest request, HttpServletResponse response, Page page){
+        int oid = Integer.parseInt(request.getParameter("oid"));
+        Order o = orderDAO.get(oid);
+        o.setStatus(OrderDAO.delete);
+        orderDAO.update(o);
+        return "%success";
+    }
+
 }
