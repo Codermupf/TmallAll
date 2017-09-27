@@ -244,10 +244,9 @@ public class ForeServlet extends BaseForeServlet {
                 orderItemDAO.update(oi);
                 break;
             }
-
         }
-        return "%success";
 
+        return "%success";
     }
     public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page){
         User user =(User) request.getSession().getAttribute("user");
@@ -256,5 +255,48 @@ public class ForeServlet extends BaseForeServlet {
         int oiid = Integer.parseInt(request.getParameter("oiid"));
         orderItemDAO.delete(oiid);
         return "%success";
+    }
+    public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page){
+        User user =(User) request.getSession().getAttribute("user");
+        List<OrderItem> ois= (List<OrderItem>) request.getSession().getAttribute("ois");
+        if(ois.isEmpty())
+            return "@login.jsp";
+        String address = request.getParameter("address");
+        String post = request.getParameter("post");
+        String receiver = request.getParameter("receiver");
+        String mobile = request.getParameter("mobile");
+        String userMessage = request.getParameter("userMessage");
+        Order order = new Order();
+        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) +RandomUtils.nextInt(10000);
+
+        order.setOrderCode(orderCode);
+        order.setAddress(address);
+        order.setPost(post);
+        order.setReceiver(receiver);
+        order.setMobile(mobile);
+        order.setUserMessage(userMessage);
+        order.setCreateDate(new Date());
+        order.setUser(user);
+        order.setStatus(OrderDAO.waitPay);
+        orderDAO.add(order);
+        float total =0;
+        for (OrderItem oi: ois) {
+            oi.setOrder(order);
+            orderItemDAO.update(oi);
+            total+=oi.getProduct().getPromotePrice()*oi.getNumber();
+        }
+        return "@forealipay?oid="+order.getId() +"&total="+total;
+    }
+    public String alipay(HttpServletRequest request, HttpServletResponse response, Page page){
+        return "alipay.jsp";
+    }
+    public String payed(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int oid = Integer.parseInt(request.getParameter("oid"));
+        Order order = orderDAO.get(oid);
+        order.setStatus(OrderDAO.waitDelivery);
+        order.setPayDate(new Date());
+        new OrderDAO().update(order);
+        request.setAttribute("o", order);
+        return "payed.jsp";
     }
 }
