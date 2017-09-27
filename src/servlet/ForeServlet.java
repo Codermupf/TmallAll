@@ -151,4 +151,48 @@ public class ForeServlet extends BaseForeServlet {
         return "searchResult.jsp";
     }
 
+    //购买功能
+    public String buyone(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        int num = Integer.parseInt(request.getParameter("num"));
+        Product p = productDAO.get(pid);
+        int oiid = 0;
+        User user =(User) request.getSession().getAttribute("user");
+        boolean found = false;
+        List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
+        for (OrderItem oi : ois) {
+            if(oi.getProduct().getId()==p.getId()){
+                oi.setNumber(oi.getNumber()+num);
+                orderItemDAO.update(oi);
+                found = true;
+                oiid = oi.getId();
+                break;
+            }
+        }
+        if(!found){
+            OrderItem oi = new OrderItem();
+            oi.setUser(user);
+            oi.setNumber(num);
+            oi.setProduct(p);
+            orderItemDAO.add(oi);
+            oiid = oi.getId();
+        }
+        return "@forebuy?oiid="+oiid;
+    }
+
+    //    真正购买功能
+    public String buy(HttpServletRequest request, HttpServletResponse response, Page page) {
+        String[] oiids=request.getParameterValues("oiid");
+        List<OrderItem> ois = new ArrayList<>();
+        float total = 0;
+        for (String strid : oiids) {
+            int oiid = Integer.parseInt(strid);
+            OrderItem oi= orderItemDAO.get(oiid);
+            total +=oi.getProduct().getPromotePrice()*oi.getNumber();
+            ois.add(oi);
+        }
+        request.getSession().setAttribute("ois", ois);
+        request.setAttribute("total", total);
+        return "buy.jsp";
+    }
 }
