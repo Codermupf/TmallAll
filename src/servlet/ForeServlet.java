@@ -111,4 +111,38 @@ public class ForeServlet extends BaseForeServlet {
         request.getSession().setAttribute("user", user);
         return "%success";
     }
-}
+
+    public String category(HttpServletRequest request, HttpServletResponse response, Page page) {
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        Category c = new CategoryDAO().get(cid);
+        new ProductDAO().fill(c);
+        new ProductDAO().setSaleAndReviewNumber(c.getProducts());
+        String sort = request.getParameter("sort");
+        if(null!=sort){
+            switch(sort){
+                case "review":
+                    Collections.sort(c.getProducts(),new ProductReviewComparator());
+                    break;
+                case "date" :
+                    Collections.sort(c.getProducts(),new ProductDateComparator());
+                    break;
+
+                case "saleCount" :
+                    Collections.sort(c.getProducts(),new ProductSaleCountComparator());
+                    break;
+
+                case "price":
+                    Collections.sort(c.getProducts(),new ProductPriceComparator());
+                    break;
+
+                case "all":
+                    Collections.sort(c.getProducts(),new ProductAllComparator());
+                    break;
+            }
+        }
+        request.setAttribute("c", c);
+        return "category.jsp";
+    }
+
+
+    }
