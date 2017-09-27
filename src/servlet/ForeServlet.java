@@ -299,4 +299,14 @@ public class ForeServlet extends BaseForeServlet {
         request.setAttribute("o", order);
         return "payed.jsp";
     }
+    public String bought(HttpServletRequest request, HttpServletResponse response, Page page) {
+        User user =(User) request.getSession().getAttribute("user");
+        List<Order> os= orderDAO.list(user.getId(),OrderDAO.delete);
+
+        orderItemDAO.fill(os);
+
+        request.setAttribute("os", os);
+
+        return "bought.jsp";
+    }
 }
